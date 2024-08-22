@@ -1,7 +1,7 @@
 #include "ConnectionManager.h"
 
 std::shared_ptr<zml::Connection> ConnectionManager::getConnection(std::string port)
-{	
+{
 	std::lock_guard<std::mutex> lockGuard(lock_);
 	if (connections_.count(port) > 0) {
 		if (auto connectionPtr = connections_.at(port).lock()) {
@@ -11,7 +11,7 @@ std::shared_ptr<zml::Connection> ConnectionManager::getConnection(std::string po
 
 	auto connection = std::make_shared<zml::Connection>(zml::Connection::openSerialPort(port));
 	auto id = connection->getInterfaceId();
-	connection->getDisconnected().subscribe([=](std::shared_ptr<zmlbase::MotionLibException>) {
+	connection->getDisconnected().subscribe([=](std::shared_ptr<zmlexc::MotionLibException>) {
 		removeConnection(port, id);
 	});
 	connections_[port] = connection;
@@ -24,7 +24,7 @@ bool ConnectionManager::removeConnection(std::string port, int interfaceId)
 	std::lock_guard<std::mutex> lockGuard(lock_);
 	if (connections_.count(port) == 0) {
 		return false;
-	} 
+	}
 
 	if (interfaceId != -1) {
 		if (auto connection = connections_.at(port).lock()) {

@@ -50,6 +50,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_USRDLL;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>
@@ -60,6 +61,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_USRDLL;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MM_3RDPARTYPUBLIC)\Zaber\zaber-motion\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -75,6 +77,7 @@
     <ClCompile Include="Illuminator.cpp" />
     <ClCompile Include="ObjectiveChanger.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="WdiAutofocus.cpp" />
     <ClCompile Include="XYStage.cpp" />
     <ClCompile Include="Zaber.cpp" />
   </ItemGroup>
@@ -85,6 +88,7 @@
     <ClInclude Include="Illuminator.h" />
     <ClInclude Include="ObjectiveChanger.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="WdiAutofocus.h" />
     <ClInclude Include="XYStage.h" />
     <ClInclude Include="Zaber.h" />
   </ItemGroup>

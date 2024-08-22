@@ -8,6 +8,7 @@
 #include <memory>
 
 namespace zmlbase = zaber::motion;
+namespace zmlexc = zaber::motion::exceptions;
 namespace zml = zaber::motion::ascii;
 
 class ConnectionManager
