@@ -186,9 +186,7 @@ int WdiAutofocus::WdiHostGetSet(MM::PropertyBase* pProp, MM::ActionType eAct)
 	{
 		if (initialized_)
 		{
-			// revert
-			pProp->Set(wdiHost_.c_str());
-			return ERR_PORT_CHANGE_FORBIDDEN;
+			resetConnection();
 		}
 
 		pProp->Get(wdiHost_);
@@ -211,9 +209,7 @@ int WdiAutofocus::WdiPortGetSet(MM::PropertyBase* pProp, MM::ActionType eAct)
 	{
 		if (initialized_)
 		{
-			// revert
-			pProp->Set(wdiPort_);
-			return ERR_PORT_CHANGE_FORBIDDEN;
+			resetConnection();
 		}
 
 		pProp->Get(wdiPort_);
@@ -236,9 +232,7 @@ int WdiAutofocus::PortGetSet(MM::PropertyBase* pProp, MM::ActionType eAct)
 	{
 		if (initialized_)
 		{
-			// revert
-			pProp->Set(port_.c_str());
-			return ERR_PORT_CHANGE_FORBIDDEN;
+			resetConnection();
 		}
 
 		pProp->Get(port_);
