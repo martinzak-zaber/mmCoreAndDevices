@@ -35,11 +35,11 @@ WdiAutofocus::WdiAutofocus() :
 	ZaberBase(this),
 	focusAddress_(1),
 	focusAxis_(1),
-	objectiveTurretAddress_(-1),
+	objectiveTurretAddress_(0),
 	wdiHost_("Undefined"),
 	wdiPort_(27),
 	limitMin_(0.0),
-	limitMax_(25.0)
+	limitMax_(0.0)
 {
 	this->LogMessage("WdiAutofocus::WdiAutofocus\n", true);
 
@@ -106,10 +106,6 @@ int WdiAutofocus::Initialize()
 	auto ret = handleException([=]() {
 		ensureConnected();
 		autofocus_.getStatus();
-
-		auto settings = autofocus_.getFocusAxis().getSettings();
-		limitMin_ = settings.get("motion.tracking.limit.min") / WdiAutofocus_::xLdaNativePerMm;
-		limitMax_ = settings.get("motion.tracking.limit.max") / WdiAutofocus_::xLdaNativePerMm;
 	 });
 	if (ret != DEVICE_OK)
 	{
@@ -323,6 +319,18 @@ int WdiAutofocus::LimitMinGetSet(MM::PropertyBase* pProp, MM::ActionType eAct)
 	}
 	else if (eAct == MM::BeforeGet)
 	{
+		if (initialized_)
+		{
+			int ret = handleException([=]() {
+				ensureConnected();
+				limitMax_ = autofocus_.getLimitMin() / WdiAutofocus_::xLdaNativePerMm;
+			});
+			if (ret != DEVICE_OK)
+			{
+				return ret;
+			}
+		}
+
 		pProp->Set(limitMin_);
 	}
 
@@ -348,6 +356,18 @@ int WdiAutofocus::LimitMaxGetSet(MM::PropertyBase* pProp, MM::ActionType eAct)
 	}
 	else if (eAct == MM::BeforeGet)
 	{
+		if (initialized_)
+		{
+			int ret = handleException([=]() {
+				ensureConnected();
+				limitMax_ = autofocus_.getLimitMax() / WdiAutofocus_::xLdaNativePerMm;
+			});
+			if (ret != DEVICE_OK)
+			{
+				return ret;
+			}
+		}
+
 		pProp->Set(limitMax_);
 	}
 
@@ -371,18 +391,14 @@ int WdiAutofocus::FullFocus() {
 	return handleException([=]() {
 		ensureConnected();
 
-		autofocus_.focusOnce(true);
+		autofocus_.focusOnce();
 	});
 }
 
 int WdiAutofocus::IncrementalFocus() {
 	this->LogMessage("WdiAutofocus::IncrementalFocus\n", true);
 
-	return handleException([=]() {
-		ensureConnected();
-
-		autofocus_.focusOnce();
-	});
+	return FullFocus();
 }
 
 int WdiAutofocus::GetLastFocusScore(double& score) {

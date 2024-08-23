@@ -49,6 +49,7 @@ const char* g_Msg_LAMP_OVERHEATED = "Some of the illuminator lamps are overheate
 const char* g_Msg_PERIPHERAL_DISCONNECTED = "A peripheral has been disconnected; please reconnect it or set its peripheral ID to zero and then restart the driver.";
 const char* g_Msg_PERIPHERAL_UNSUPPORTED = "Controller firmware does not support one of the connected peripherals; please update the firmware.";
 const char* g_Msg_FIRMWARE_UNSUPPORTED = "Firmware is not suported; please update the firmware.";
+const char* g_Msg_ERR_INVALID_OPERATION = "Operation cannot be performed at this time.";
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -459,6 +460,10 @@ int ZaberBase::handleException(std::function<void()> wrapped) {
 		core_->LogMessage(device_, e.what(), true);
 		return ERR_MOVEMENT_FAILED;
 	}
+	catch (const zmlexc::InvalidOperationException e) {
+		core_->LogMessage(device_, e.what(), true);
+		return ERR_INVALID_OPERATION;
+	}
 	catch (const zmlexc::MotionLibException e) {
 		core_->LogMessage(device_, e.what(), true);
 		return DEVICE_ERR;
@@ -478,4 +483,5 @@ void ZaberBase::setErrorMessages(std::function<void(int, const char*)> setter) {
 	setter(ERR_LAMP_DISCONNECTED, g_Msg_LAMP_DISCONNECTED);
 	setter(ERR_LAMP_OVERHEATED, g_Msg_LAMP_OVERHEATED);
 	setter(ERR_FIRMWARE_UNSUPPORTED, g_Msg_FIRMWARE_UNSUPPORTED);
+	setter(ERR_INVALID_OPERATION, g_Msg_ERR_INVALID_OPERATION);
 }

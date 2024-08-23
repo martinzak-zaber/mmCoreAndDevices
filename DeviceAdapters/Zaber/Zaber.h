@@ -44,6 +44,7 @@ namespace zmlmi = zaber::motion::microscopy;
 
 #define ERR_PORT_CHANGE_FORBIDDEN    10002
 #define ERR_DRIVER_DISABLED          10004
+#define ERR_INVALID_OPERATION        10008
 #define ERR_MOVEMENT_FAILED          10016
 #define ERR_COMMAND_REJECTED         10032
 #define	ERR_NO_REFERENCE_POS         10064
