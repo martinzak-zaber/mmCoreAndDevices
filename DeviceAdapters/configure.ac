@@ -436,14 +436,16 @@ zml_header_to_check="${thirdpartypublic}/Zaber/zaber-motion/include/zaber/motion
 AM_CONDITIONAL([BUILD_ZABER], [test -f $zml_header_to_check])
 if test -f "$zml_header_to_check"; then
    AC_MSG_RESULT([found])
-   ZML_CPPFLAGS="-I${thirdpartypublic}/Zaber/zaber-motion/include"
+   # We require C++17 because libzml is C++17. Setting the C++ standard for individual device adapters
+   # is a hack and should not be imitated except when there is no other option.
+   ZML_CPPFLAGS="-I${thirdpartypublic}/Zaber/zaber-motion/include -std=c++17"
    ZML_LIBS="-lzml"
    case $host in
       *linux*)
          # Linux builds by users should install ZML libs
          zml_linux_libdir="${thirdpartypublic}/Zaber/zaber-motion/linux-amd64/lib"
          ZML_LDFLAGS="-L${zml_linux_libdir} -Wl,-rpath,"'\$$ORIGIN'
-         ZML_LIBS_TO_COPY="${zml_linux_libdir}/libzml.so.3.4 ${zml_linux_libdir}/libzaber-motion-lib-linux-amd64.so.3.4.3"
+         ZML_LIBS_TO_COPY="${zml_linux_libdir}/libzml.so.6.6 ${zml_linux_libdir}/libzaber-motion-lib-linux-amd64.so.6.6.0"
          ;;
 
       *apple-darwin*)
